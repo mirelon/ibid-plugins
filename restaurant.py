@@ -91,7 +91,7 @@ class Bmp(Restaurant):
     url = "http://dunajska.mestianskypivovar.sk/pivovar-dunajska-ponuka-dna-denne-menu-bratislava-dobry-obed"
 
     def parse(self, html):
-        return re.findall('<td class="foodDescrip">(.*)<\/td>', html)
+        return [obed.decode("utf8") for obed in re.findall('<td class="foodDescrip">(.*)<\/td>', html)]
 
 all_restaurants = [
     Ferdinand(),
@@ -110,22 +110,22 @@ class Diet:
 
     def mark(self, meal):
         for black in self.blacklist():
-            meal = meal.replace(black, colored(black, 'red'))
+            meal = meal.replace(black.decode('utf8'), colored(black.decode('utf8'), 'red'))
         return meal
 
 class GlutenFree(Diet):
     def blacklist(self):
         return (Diet.blacklist(self) +
-            ['buchty', 'cestoviny', 'pirohy', 'penne', 'Pene', 'Penne', 'tagliatelle', 'Pizza', 'pizza', 'gnocchi', 'chleba', 'chlieb'])
+            ['buchty', 'cestoviny', 'pirohy', 'penne', 'Pene', 'Penne', 'tagliatelle', 'Pizza', 'pizza', 'gnocchi', 'chleba', 'chlieb', 'Burger', 'bagetka', 'cestíčku', 'tarhoňa', 'strúhanke', 'Vyprážaný', 'vyprážaný', 'Piškót'])
 
 class Paleo(GlutenFree):
     def blacklist(self):
-        return (Diet.blacklist(self) +
-            ['zemiaky', 'zemiakmi', 'hranolky', 'hranolkami', 'ryza'])
+        return (GlutenFree.blacklist(self) +
+            ['zemiaky', 'zemiakmi', 'zemiačiky', 'hranolky', 'hranolkami', 'ryza', 'ryža', 'ryžovým', 'ryžou', 'Rizoto', 'chlebíkom', 'lekvárom', 'čoko', 'krupicovými'])
 
 class Keto(Paleo):
     def blacklist(self):
-        return Paleo.blacklist(self) + ['jahodami']
+        return Paleo.blacklist(self) + ['jahodami', 'jahodovým', 'Šošovicová', 'strukovinový', 'sézamovej', 'Fazuľový', 'Hrachová', 'cícerom', 'čučoriedkovou', 'kakaová']
 
 for r in all_restaurants:
     print(colored(r.__class__.__name__, 'yellow'))
