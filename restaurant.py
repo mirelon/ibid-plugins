@@ -54,12 +54,8 @@ class Lanai(Restaurant):
     def parse(self, html):
         week = ['PONDELOK','UTOROK','STREDA','ŠTVRTOK','PIATOK']
         day_date = datetime.datetime.today().strftime("%d.%m.%Y")
-        print(week[self.weekday()])
-        print(day_date)
         vsetky = re.findall('<p><strong><em>'+week[self.weekday()]+'.*'+day_date+'</em></strong></p>(.*)', html, re.MULTILINE|re.DOTALL)
-        print(vsetky)
         obedy = re.findall('<p><strong>.*:</strong>(.*)</p>', vsetky[0], re.MULTILINE)
-        print(obedy)
         return [(re.sub('<[^<]+?>','',obed).replace("\t",' : ').lstrip(' ')+"\n").decode("utf8") for obed in obedy[:5]]
 
 class Club(ZomatoRestaurant):
