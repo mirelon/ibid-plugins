@@ -4,6 +4,7 @@ import urllib
 import re
 import HTMLParser
 import datetime
+from termcolor import colored
 
 class Restaurant:
     @property
@@ -92,6 +93,6 @@ all_restaurants = [
     Bmp()
 ]
 for r in all_restaurants:
-    print(r.__class__.__name__)
+    print(colored(r.__class__.__name__, 'yellow'))
     for meal in r.download():
         print(meal)
