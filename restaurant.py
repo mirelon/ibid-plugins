@@ -103,7 +103,31 @@ all_restaurants = [
     Lanai(),
     Flagship()
 ]
+
+class Diet:
+    def blacklist(self):
+        return []
+
+    def mark(self, meal):
+        for black in self.blacklist():
+            meal = meal.replace(black, colored(black, 'red'))
+        return meal
+
+class GlutenFree(Diet):
+    def blacklist(self):
+        return (Diet.blacklist(self) +
+            ['buchty', 'cestoviny', 'pirohy', 'penne', 'Pene', 'Penne', 'tagliatelle', 'Pizza', 'pizza', 'gnocchi', 'chleba', 'chlieb'])
+
+class Paleo(GlutenFree):
+    def blacklist(self):
+        return (Diet.blacklist(self) +
+            ['zemiaky', 'zemiakmi', 'hranolky', 'hranolkami', 'ryza'])
+
+class Keto(Paleo):
+    def blacklist(self):
+        return Paleo.blacklist(self) + ['jahodami']
+
 for r in all_restaurants:
     print(colored(r.__class__.__name__, 'yellow'))
     for meal in r.download():
-        print(meal)
+        print(Keto().mark(meal))
