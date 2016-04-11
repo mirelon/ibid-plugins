@@ -80,6 +80,13 @@ class Obyvacka(ZomatoRestaurant):
         obedy = re.findall('<div class="tmi-name">\n.*/', html, re.MULTILINE)
         return [(re.sub('<[^<]+?>','',obed).replace("\t",' : ').strip()).decode("utf8") for obed in obedy[:5] if 'polievku,' not in obed]
 
+class Staromestsky(ZomatoRestaurant):
+    url = "https://www.zomato.com/sk/bratislava/staromestsk%C3%BD-pub-restaurant-star%C3%A9-mesto-bratislava-i/menu#daily"
+
+    def parse(self, html):
+        obedy = re.findall('<div class="tmi-name">\n.*([0-9]\..*)', html, re.MULTILINE)
+        return [(re.sub('<[^<]+?>','',obed).replace("\t",' : ').strip()).decode("utf8") for obed in obedy[:5]]
+
 class Bmp(Restaurant):
     url = "http://dunajska.mestianskypivovar.sk/pivovar-dunajska-ponuka-dna-denne-menu-bratislava-dobry-obed"
 
@@ -91,6 +98,7 @@ all_restaurants = [
     Bmp(),
     Napoli(),
     Obyvacka(),
+    Staromestsky(),
     Club(),
     Lanai(),
     Flagship()
