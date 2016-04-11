@@ -5,6 +5,7 @@ import re
 import HTMLParser
 import datetime
 from termcolor import colored
+import time
 
 class Restaurant:
     @property
@@ -12,7 +13,9 @@ class Restaurant:
         raise NotImplementedError
 
     def download(self):
+        start_time = time.time()
         html = urllib.urlopen(self.url).read()
+        print("--- %s seconds ---" % (time.time() - start_time))
         html_parser = HTMLParser.HTMLParser()
         return html_parser.unescape(self.parse(html))
 
@@ -85,12 +88,12 @@ class Bmp(Restaurant):
 
 all_restaurants = [
     Ferdinand(),
-    Flagship(),
-    Lanai(),
-    Club(),
+    Bmp(),
     Napoli(),
     Obyvacka(),
-    Bmp()
+    Club(),
+    Lanai(),
+    Flagship()
 ]
 for r in all_restaurants:
     print(colored(r.__class__.__name__, 'yellow'))
