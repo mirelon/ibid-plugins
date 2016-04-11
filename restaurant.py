@@ -18,15 +18,15 @@ class Restaurant:
     def parse(self, html):
         raise NotImplementedError
 
-    def weekday():
-        datetime.datetime.today().weekday()
+    def weekday(self):
+        return datetime.datetime.today().weekday()
 
 class ZomatoRestaurant(Restaurant):
     pass
 
 class Ferdinand(Restaurant):
     url = "http://www.papanica.sk/sk/denne.php?id=4445&kraj=1"
-    def decode(string):
+    def decode(self, string):
         try:
             return string.decode("utf8")
         except:
@@ -34,7 +34,7 @@ class Ferdinand(Restaurant):
 
     def parse(self, html):
         obedy = re.findall('<h3 class="text">([0-9].*)</h3></td>', html, re.MULTILINE)
-        return [decode(re.sub('<[^<]+?>','',obed).replace("\t",' : ').lstrip(' ')+"\n") for obed in obedy[:4]]
+        return [self.decode(re.sub('<[^<]+?>','',obed).replace("\t",' : ').lstrip(' ')+"\n") for obed in obedy[:4]]
 
 class Flagship(Restaurant):
     url = "http://www.bratislavskarestauracia.sk/sk/denne-menu"
@@ -42,7 +42,7 @@ class Flagship(Restaurant):
     def parse(self, html):
         week = ['Pondelok / Monday','Utorok / Tuesday','Streda / Wednesday','Štvrtok / Thursday','Piatok / Friday']
         try:
-            vsetky = re.findall('<h3>'+week[weekday()]+'</h3>(.*)<h3>', html, re.MULTILINE|re.DOTALL)
+            vsetky = re.findall('<h3>'+week[self.weekday()]+'</h3>(.*)<h3>', html, re.MULTILINE|re.DOTALL)
             obedy = re.findall('<div class="col-md-5"><span>(.*)</span></div>', vsetky[0], re.MULTILINE)
             return [(re.sub('<[^<]+?>','',obed).replace("\t",' : ').lstrip(' ')+"\n").decode("utf8") for obed in obedy[:5]]
         except:
@@ -54,12 +54,13 @@ class Lanai(Restaurant):
     def parse(self, html):
         week = ['PONDELOK','UTOROK','STREDA','ŠTVRTOK','PIATOK']
         day_date = datetime.datetime.today().strftime("%d.%m.%Y")
-        try:
-            vsetky = re.findall('<p><strong><em>'+week[weekday()]+'.*'+day_date+'</em></strong></p>(.*)<p>&nbsp;</p>', html, re.MULTILINE|re.DOTALL)
-            obedy = re.findall('<p><strong>.*:</strong>(.*)</p>', vsetky[0], re.MULTILINE)
-            return [(re.sub('<[^<]+?>','',obed).replace("\t",' : ').lstrip(' ')+"\n").decode("utf8") for obed in obedy[:5]]
-        except:
-            return []
+        print(week[self.weekday()])
+        print(day_date)
+        vsetky = re.findall('<p><strong><em>'+week[self.weekday()]+'.*'+day_date+'</em></strong></p>(.*)', html, re.MULTILINE|re.DOTALL)
+        print(vsetky)
+        obedy = re.findall('<p><strong>.*:</strong>(.*)</p>', vsetky[0], re.MULTILINE)
+        print(obedy)
+        return [(re.sub('<[^<]+?>','',obed).replace("\t",' : ').lstrip(' ')+"\n").decode("utf8") for obed in obedy[:5]]
 
 class Club(ZomatoRestaurant):
     url = "https://www.zomato.com/sk/bratislava/club-restaurant-star%C3%A9-mesto-bratislava-i"
