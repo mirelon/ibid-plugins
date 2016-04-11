@@ -115,17 +115,26 @@ class Diet:
 
 class GlutenFree(Diet):
     def blacklist(self):
-        return (Diet.blacklist(self) +
-            ['buchty', 'cestoviny', 'pirohy', 'penne', 'Pene', 'Penne', 'tagliatelle', 'Pizza', 'pizza', 'gnocchi', 'chleba', 'chlieb', 'Burger', 'bagetka', 'cestíčku', 'tarhoňa', 'strúhanke', 'Vyprážaný', 'vyprážaný', 'Piškót'])
+        return Diet.blacklist(self) + [
+            'buchty', 'Palacinky', 'knedľa', 'Lasagne',
+            'cestoviny', 'pirohy', 'penne', 'Pene', 'Penne', 'tagliatelle', 'gnocchi', 'tarhoňa', 'tarhoňou', 'kolienka',
+            'Pizza', 'pizza', 'chleba', 'chlieb', 'chlebík', 'chlebíkom', 'pečivo', 'toast', 'Burger', 'bagetka', 'strúhanke', 'Vyprážaný', 'Vyprážané', 'vyprážaný', 'Piškót', 
+            'cestíčku', 'halušky', 'haluškami',
+            'perkelt']
 
 class Paleo(GlutenFree):
     def blacklist(self):
-        return (GlutenFree.blacklist(self) +
-            ['zemiaky', 'zemiakmi', 'zemiačiky', 'hranolky', 'hranolkami', 'ryza', 'ryža', 'ryžovým', 'ryžou', 'Rizoto', 'chlebíkom', 'lekvárom', 'čoko', 'krupicovými'])
+        return GlutenFree.blacklist(self) + [
+            'zemiaky', 'zemiakmi', 'zemiačiky', 'zemiaková', 'hranolky', 'hranolkami',
+            'ryza', 'ryža', 'ryžovým', 'ryžou', 'ryžový', 'Rizoto',
+            'lekvárom', 'džemom', 'Čokoládový', 'čokoládový', 'čoko', 'krupicovými']
 
 class Keto(Paleo):
     def blacklist(self):
-        return Paleo.blacklist(self) + ['jahodami', 'jahodovým', 'Šošovicová', 'strukovinový', 'sézamovej', 'Fazuľový', 'Hrachová', 'cícerom', 'čučoriedkovou', 'kakaová']
+        return Paleo.blacklist(self) + [
+            'jahodami', 'jahodovým', 'čučoriedkovou', 
+            'Šošovicová', 'strukovinový', 'sézamovej', 'Fazuľový', 'Hrachová', 'Hrášková', 'hráškom', 'cícerom', 'Luskova', 'kukuricou', 'Fazuľová', 'fazuľkách',
+            'kakaová']
 
 for r in all_restaurants:
     print(colored(r.__class__.__name__, 'yellow'))
