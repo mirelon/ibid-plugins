@@ -1,4 +1,7 @@
 # lunch-menu-parser
+
+Notice: this version built on Python is gonna be discontinued. A new version, written in Scala, which will use https://github.com/essential-data/stemmer-sk will be released soon.
+
 ### Usage
 Requirements:
 
